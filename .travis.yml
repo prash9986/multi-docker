@@ -1,0 +1,27 @@
+sudo: required
+service:
+    - docker
+
+before_install:
+    - docker build -t prashaant9986/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run prashaant9986/react-test npm test --  --coverage
+
+after_success:
+    - docker build -t prashaant9986/multi-client ./client
+    - docker build -t prashaant9986/multi-nginx ./nginx
+    - docker build -t prashaant9986/multi-server ./server
+    - docker build -t prashaant9986/multi-worker ./worker
+    
+    # Log in to the docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+
+    # Take those images and push then to docker 
+    - docker push prashaant9986/multi-client
+    - docker push prashaant9986/multi-nginx
+    - docker push prashaant9986/multi-server
+    - docker push prashaant9986/multi-worker
+
+
+
