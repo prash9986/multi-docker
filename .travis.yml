@@ -16,7 +16,6 @@ after_success:
     
     # Log in to the docker CLI
     - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
-
     # Take those images and push then to docker 
     - docker push prashaant9986/multi-client
     - docker push prashaant9986/multi-nginx
